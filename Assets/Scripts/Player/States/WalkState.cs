@@ -14,13 +14,16 @@ public class WalkState : MonoBehaviour, State
     private Vector2 _movement;
     
     private StateMachine _stateMachine;
+    private Animator _animator;
 
     public void Enter(StateMachine stateMachine)
     {
         _stateMachine = stateMachine;
         _playerControls = new PlayerControls();
         _rigidbody = GetComponent<Rigidbody>();
+        _animator = GetComponentInChildren<Animator>();
         _playerControls.Movement.Enable();
+        _animator.SetBool("Walk", true);
     }
 
     public void Tick()
@@ -42,6 +45,7 @@ public class WalkState : MonoBehaviour, State
     public void Exit()
     {
         _rigidbody.velocity = Vector3.zero;
+        _animator.SetBool("Walk", false);
     }
 
     private void Move()
