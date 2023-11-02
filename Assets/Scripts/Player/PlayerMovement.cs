@@ -32,20 +32,26 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         _movement = _playerControls.Movement.Move.ReadValue<Vector2>();
-        if (_movement != Vector2.zero)
-        {
-            var newForward = new Vector3(_movement.x,0,_movement.y);
-            transform.forward = Vector3.Lerp(transform.forward, newForward, rotationSpeed * Time.deltaTime);
-        }
     }
 
     private void FixedUpdate()
     {
         Move();
+        RotatePlayer();
     }
 
     private void Move()
     {
         _rigidbody.velocity = new Vector3(_movement.x * speed, 0, _movement.y * speed);
+    }
+
+    private void RotatePlayer()
+    {
+        if (_movement != Vector2.zero)
+        {
+            var targetRotation = Quaternion.LookRotation(new Vector3(_movement.x, 0, _movement.y));
+            targetRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
+            _rigidbody.MoveRotation(targetRotation);
+        }
     }
 }
