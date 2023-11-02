@@ -36,11 +36,12 @@ public class StateMachine : MonoBehaviour
 
     public void SwitchState(playerState newState)
     {
-        CheckState(newState);
+        _currentState?.Exit();
+        CheckNewState(newState);
         _currentState.Enter(this);
     }
 
-    private void CheckState(playerState state)
+    private void CheckNewState(playerState state)
     {
         switch (state)
         {
@@ -52,10 +53,4 @@ public class StateMachine : MonoBehaviour
                 break;
         }
     }
-}
-
-public enum playerState
-{
-    Idle,
-    Walk
 }

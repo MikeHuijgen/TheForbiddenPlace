@@ -39,6 +39,11 @@ public class WalkState : MonoBehaviour, State
         RotatePlayer();
     }
 
+    public void Exit()
+    {
+        _rigidbody.velocity = Vector3.zero;
+    }
+
     private void Move()
     {
         _rigidbody.velocity = new Vector3(_movement.x * speed, 0, _movement.y * speed);
