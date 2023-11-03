@@ -4,31 +4,28 @@ using UnityEngine;
 
 public class AttackState : MonoBehaviour, State
 {
-    public bool isAttacking;
+    [SerializeField] private float attackMoveForce;
     private StateMachine _stateMachine;
-    private PlayerControls _playerControls;
     private Animator _animator;
 
     public void Enter(StateMachine stateMachine)
     {
         _stateMachine = stateMachine;
-        _playerControls = new PlayerControls();
-        _playerControls.Movement.Disable();
         _animator = GetComponentInChildren<Animator>();
-        _animator.SetTrigger("Idle");
+        _animator.SetTrigger("Attack");
     }
 
     public void Tick()
     {
-        if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        if (_animator.IsInTransition(0))
         {
-            
-            //_stateMachine.SwitchState(playerState.Idle);
+            StartCoroutine(SwitchToIdleState());
         }
     }
 
-    public void Exit()
+    IEnumerator SwitchToIdleState()
     {
-        _animator.SetBool("Attack",false);
+        yield return new WaitForSeconds(_animator.GetAnimatorTransitionInfo(0).duration);
+        _stateMachine.SwitchState(playerState.Idle);
     }
 }

@@ -28,6 +28,11 @@ public class WalkState : MonoBehaviour, State
         {
             _stateMachine.SwitchState(playerState.Idle);
         }
+        
+        if (InputHandler.Instance.IsAttacking())
+        {
+            _stateMachine.SwitchState(playerState.Attack);
+        }
     }
 
     public void FixedTick()
