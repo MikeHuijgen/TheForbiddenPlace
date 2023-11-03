@@ -7,15 +7,19 @@ public class StateMachine : MonoBehaviour
 {
     private State _currentState;
 
-    private playerState _playerState;
+    [SerializeField] private playerState _playerState;
     
     private WalkState _walkState;
     private IdleState _idleState;
+    private AttackState _attackState;
 
+    private PlayerControls _playerControls;
     private void Awake()
     {
+        _playerControls = new PlayerControls();
         _walkState = GetComponent<WalkState>();
         _idleState = GetComponent<IdleState>();
+        _attackState = GetComponent<AttackState>();
     }
 
     private void Start()
@@ -47,10 +51,21 @@ public class StateMachine : MonoBehaviour
         {
             case playerState.Idle:
                 _currentState = _idleState;
+                _playerState = playerState.Idle;
                 break;
             case playerState.Walk:
                 _currentState = _walkState;
+                _playerState = playerState.Walk;
+                break;
+            case playerState.Attack:
+                _currentState = _attackState;
+                _playerState = playerState.Attack;
                 break;
         }
+    }
+
+    public playerState GetPlayerState()
+    {
+        return _playerState;
     }
 }
