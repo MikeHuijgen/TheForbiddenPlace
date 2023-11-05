@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class AttackState : MonoBehaviour, State
 {
@@ -11,13 +13,14 @@ public class AttackState : MonoBehaviour, State
     private Animator _animator;
     private Rigidbody _rigidbody;
 
-    private BoxCollider _weaponCollider;
-    
     //Dit is de combo kijken of het nog gesplitst moet worden
     [SerializeField] private List<AttackSO> combo;
-    private float _lastClickedTime;
+    
+    private float _lastAttackTime = 100;
     private float _lastComboEnd;
     public int _comboCounter;
+    private bool _canStartNewCombo = true;
+    [SerializeField] private float secondsBetweenAttacks;
 
 
     public void Enter(StateMachine stateMachine)
@@ -25,7 +28,6 @@ public class AttackState : MonoBehaviour, State
         _stateMachine = stateMachine;
         _animator = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
-        _weaponCollider = weapon.GetComponent<BoxCollider>();
         _rigidbody.velocity = transform.forward * attackMoveForce;
         _comboCounter = 0;
         Attack();
@@ -33,6 +35,7 @@ public class AttackState : MonoBehaviour, State
 
     public void Tick()
     {
+        _lastAttackTime += Time.deltaTime;
         if (InputHandler.Instance.IsAttacking())
         {
             Attack();
@@ -44,42 +47,35 @@ public class AttackState : MonoBehaviour, State
     {
         _rigidbody.velocity = Vector3.zero;
         _comboCounter = 0;
-        _lastComboEnd = 1;
     }
 
     void Attack()
     {
-        if (Time.time - _lastComboEnd > 0.5f && _comboCounter <= combo.Count)
+        if (_comboCounter <= combo.Count)
         {
-            CancelInvoke(nameof(EndCombo));
-
-            if (Time.time - _lastClickedTime >= 0.2f)
+            if (_lastAttackTime >= secondsBetweenAttacks)
             {
-                _weaponCollider.enabled = true;
-                _animator.runtimeAnimatorController = combo[_comboCounter].AnimatorOverrideController;
-                _animator.Play("Attack",0,0);
-                weapon.GetComponent<DamageSource>().damage = combo[_comboCounter].Damage;
-                _comboCounter++;
-                _lastClickedTime = Time.time;
-                
+                CancelInvoke(nameof(EndCombo));
                 if (_comboCounter >= combo.Count)
                 {
                     _comboCounter = 0;
                 }
+                
+                _animator.runtimeAnimatorController = combo[_comboCounter].AnimatorOverrideController;
+                _animator.Play("Attack",0,0);
+                _comboCounter++;
+                _lastAttackTime = 0;
             }
+            
         }
+        
     }
 
     void ExitAttack()
     {
         if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9 && _animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
         {
-            _weaponCollider.enabled = false;
-            if (InputHandler.Instance.GetMovementValue() != Vector2.zero)
-            {
-                Invoke(nameof(EndCombo), 0.1f);
-            }
-            Invoke(nameof(EndCombo), .5f);
+            Invoke(nameof(EndCombo), secondsBetweenAttacks + .2f);
         }
     }
 

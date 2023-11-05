@@ -58,6 +58,7 @@ public class WalkState : MonoBehaviour, State
 
     public void Exit()
     {
+        _animator.SetBool("Walking", false);
         _rigidbody.velocity = Vector3.zero;
     }
 

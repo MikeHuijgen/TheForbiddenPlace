@@ -10,4 +10,14 @@ public class DamageSource : MonoBehaviour
     {
         Debug.Log(damage);
     }
+
+    public void EnableTrigger()
+    {
+        GetComponent<BoxCollider>().enabled = true;
+    }
+    
+    public void DisableTrigger()
+    {
+        GetComponent<BoxCollider>().enabled = false;
+    }
 }
