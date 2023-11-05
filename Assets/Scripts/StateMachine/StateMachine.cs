@@ -12,11 +12,9 @@ public class StateMachine : MonoBehaviour
     private WalkState _walkState;
     private IdleState _idleState;
     private AttackState _attackState;
-
-    private PlayerControls _playerControls;
+    
     private void Awake()
     {
-        _playerControls = new PlayerControls();
         _walkState = GetComponent<WalkState>();
         _idleState = GetComponent<IdleState>();
         _attackState = GetComponent<AttackState>();
@@ -62,10 +60,5 @@ public class StateMachine : MonoBehaviour
                 _playerState = playerState.Attack;
                 break;
         }
-    }
-
-    public playerState GetPlayerState()
-    {
-        return _playerState;
     }
 }

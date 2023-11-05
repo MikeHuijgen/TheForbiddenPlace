@@ -12,22 +12,37 @@ public class WalkState : MonoBehaviour, State
     private StateMachine _stateMachine;
     private Animator _animator;
 
+    private float _lastMovementInput;
+    private float _waitTillIdle = .2f;
+
     public void Enter(StateMachine stateMachine)
     {
         _stateMachine = stateMachine;
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponentInChildren<Animator>();
-        _animator.SetBool("Walk", true);
+        _animator.SetBool("Walking", true);
     }
 
     public void Tick()
     {
         _movement = InputHandler.Instance.GetMovementValue();
-
+        
         if (_movement == Vector2.zero)
         {
-            _stateMachine.SwitchState(playerState.Idle);
+            _animator.SetBool("Walking", false);
+            _lastMovementInput += Time.deltaTime;
+            if (_lastMovementInput > _waitTillIdle)
+            {
+                _lastMovementInput = 0;
+                _stateMachine.SwitchState(playerState.Idle);
+            }
         }
+        else
+        {
+            _lastMovementInput = 0;
+            _animator.SetBool("Walking", true);
+        }
+        
         
         if (InputHandler.Instance.IsAttacking())
         {
@@ -44,7 +59,6 @@ public class WalkState : MonoBehaviour, State
     public void Exit()
     {
         _rigidbody.velocity = Vector3.zero;
-        _animator.SetBool("Walk", false);
     }
 
     private void Move()
