@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 public class AttackState : MonoBehaviour, State
 {
     [SerializeField] private float attackMoveForce;
-    [SerializeField] private GameObject weapon;
+    [SerializeField] private GameObject hitPoint;
 
     private StateMachine _stateMachine;
     private Animator _animator;
@@ -21,6 +21,10 @@ public class AttackState : MonoBehaviour, State
     public int _comboCounter;
     private bool _canStartNewCombo = true;
     [SerializeField] private float secondsBetweenAttacks;
+    private DamageSource _damageSource;
+
+    public UnityEvent startAttacking;
+    public UnityEvent endAttacking; 
 
 
     public void Enter(StateMachine stateMachine)
@@ -28,8 +32,8 @@ public class AttackState : MonoBehaviour, State
         _stateMachine = stateMachine;
         _animator = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.velocity = transform.forward * attackMoveForce;
         _comboCounter = 0;
+        _damageSource = hitPoint.GetComponent<DamageSource>();
         Attack();
     }
 
@@ -49,29 +53,24 @@ public class AttackState : MonoBehaviour, State
         _comboCounter = 0;
     }
 
-    void Attack()
+    private void Attack()
     {
-        if (_comboCounter <= combo.Count)
+        if (_comboCounter > combo.Count || !(_lastAttackTime >= secondsBetweenAttacks)) return;
+        CancelInvoke(nameof(EndCombo));
+        if (_comboCounter >= combo.Count)
         {
-            if (_lastAttackTime >= secondsBetweenAttacks)
-            {
-                CancelInvoke(nameof(EndCombo));
-                if (_comboCounter >= combo.Count)
-                {
-                    _comboCounter = 0;
-                }
-                
-                _animator.runtimeAnimatorController = combo[_comboCounter].AnimatorOverrideController;
-                _animator.Play("Attack",0,0);
-                _comboCounter++;
-                _lastAttackTime = 0;
-            }
-            
+            _comboCounter = 0;
         }
-        
+        _rigidbody.velocity = transform.forward * attackMoveForce;
+        _animator.runtimeAnimatorController = combo[_comboCounter].AnimatorOverrideController;
+        _damageSource.damage = combo[_comboCounter].Damage;
+        _animator.Play("Attack",0,0);
+        startAttacking?.Invoke();
+        _comboCounter++;
+        _lastAttackTime = 0;
     }
 
-    void ExitAttack()
+    private void ExitAttack()
     {
         if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9 && _animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
         {
@@ -79,8 +78,9 @@ public class AttackState : MonoBehaviour, State
         }
     }
 
-    void EndCombo()
+    private void EndCombo()
     {
+        endAttacking?.Invoke();
         _stateMachine.SwitchState(playerState.Idle);
     }
 }

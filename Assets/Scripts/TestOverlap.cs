@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageSource : MonoBehaviour
+public class TestOverlap : MonoBehaviour
 {
-    public float damage;
     public float range;
     public LayerMask enemyLayer;
     
@@ -14,8 +13,7 @@ public class DamageSource : MonoBehaviour
         var collider = Physics.OverlapSphere(transform.position, range, enemyLayer);
         foreach (var col in collider)
         {
-            var healthComponent = col.GetComponent<Health>();
-            healthComponent.TakeDamage(damage);
+            Debug.Log(col.name);
         }
     }
 
