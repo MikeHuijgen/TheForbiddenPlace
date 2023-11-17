@@ -8,7 +8,7 @@ public class DamageSource : MonoBehaviour
     public float damage;
     public float range;
     public LayerMask enemyLayer;
-    
+
     public void ActivateSphere()
     {
         var collider = Physics.OverlapSphere(transform.position, range, enemyLayer);

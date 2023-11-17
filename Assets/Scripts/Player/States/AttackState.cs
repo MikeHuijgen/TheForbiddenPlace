@@ -64,6 +64,7 @@ public class AttackState : MonoBehaviour, State
         _rigidbody.velocity = transform.forward * attackMoveForce;
         _animator.runtimeAnimatorController = combo[_comboCounter].AnimatorOverrideController;
         _damageSource.damage = combo[_comboCounter].Damage;
+        hitPoint.transform.localPosition = combo[_comboCounter].HitPointLocation;
         _animator.Play("Attack",0,0);
         startAttacking?.Invoke();
         _comboCounter++;
@@ -74,13 +75,13 @@ public class AttackState : MonoBehaviour, State
     {
         if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9 && _animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
         {
+            endAttacking?.Invoke();
             Invoke(nameof(EndCombo), secondsBetweenAttacks + .2f);
         }
     }
 
     private void EndCombo()
     {
-        endAttacking?.Invoke();
         _stateMachine.SwitchState(playerState.Idle);
     }
 }

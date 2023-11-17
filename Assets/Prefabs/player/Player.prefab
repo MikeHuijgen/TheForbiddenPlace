@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4930436198924425787}
   - component: {fileID: 7308081732979218542}
   - component: {fileID: 7212766750915912799}
-  - component: {fileID: 4766763837155278220}
   m_Layer: 0
   m_Name: TestWeapon
   m_TagString: Untagged
@@ -106,23 +105,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4766763837155278220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7367271714227018182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3804062f0814866499ac0a6abd34c354, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 0
-  range: 0
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &8324854584953555516
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,8 +161,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8677664180444037311}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.85, z: 1.97}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -200,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  range: 2
+  range: 3
   enemyLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -242,7 +224,7 @@ Transform:
   - {fileID: 2147591431412320642}
   - {fileID: 9097120574145059232}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3668178828221762587
 Rigidbody:
@@ -377,7 +359,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
   endAttacking:
     m_PersistentCalls:

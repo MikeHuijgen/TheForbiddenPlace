@@ -7,4 +7,5 @@ public class AttackSO : ScriptableObject
 {
     public AnimatorOverrideController AnimatorOverrideController;
     public float Damage;
+    public Vector3 HitPointLocation;
 }
