@@ -34,6 +34,7 @@ public class AttackState : MonoBehaviour, State
         _rigidbody = GetComponent<Rigidbody>();
         _comboCounter = 0;
         _damageSource = hitPoint.GetComponent<DamageSource>();
+        _animator.ResetTrigger("DoneAttacking");
         Attack();
     }
 
@@ -44,6 +45,7 @@ public class AttackState : MonoBehaviour, State
         {
             Attack();
         }
+        
         ExitAttack();
     }
 
@@ -73,7 +75,7 @@ public class AttackState : MonoBehaviour, State
 
     private void ExitAttack()
     {
-        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9 && _animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.2 && _animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
         {
             endAttacking?.Invoke();
             Invoke(nameof(EndCombo), secondsBetweenAttacks + .2f);
@@ -82,6 +84,14 @@ public class AttackState : MonoBehaviour, State
 
     private void EndCombo()
     {
-        _stateMachine.SwitchState(playerState.Idle);
+        _animator.SetTrigger("DoneAttacking");
+        if (InputHandler.Instance.GetMovementValue() != Vector2.zero)
+        {
+            _stateMachine.SwitchState(playerState.Walk);
+        }
+        else
+        {
+            _stateMachine.SwitchState(playerState.Idle);
+        }
     }
 }
