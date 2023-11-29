@@ -45,7 +45,7 @@ public class AttackState : MonoBehaviour, State
         {
             Attack();
         }
-        
+
         ExitAttack();
     }
 
@@ -58,6 +58,7 @@ public class AttackState : MonoBehaviour, State
     private void Attack()
     {
         if (_comboCounter > combo.Count || !(_lastAttackTime >= secondsBetweenAttacks)) return;
+        startAttacking?.Invoke();
         CancelInvoke(nameof(EndCombo));
         if (_comboCounter >= combo.Count)
         {
@@ -68,7 +69,6 @@ public class AttackState : MonoBehaviour, State
         _damageSource.damage = combo[_comboCounter].Damage;
         hitPoint.transform.localPosition = combo[_comboCounter].HitPointLocation;
         _animator.Play("Attack",0,0);
-        startAttacking?.Invoke();
         _comboCounter++;
         _lastAttackTime = 0;
     }
@@ -77,13 +77,13 @@ public class AttackState : MonoBehaviour, State
     {
         if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.2 && _animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
         {
-            endAttacking?.Invoke();
             Invoke(nameof(EndCombo), secondsBetweenAttacks + .2f);
         }
     }
 
     private void EndCombo()
     {
+        endAttacking?.Invoke();
         _animator.SetTrigger("DoneAttacking");
         if (InputHandler.Instance.GetMovementValue() != Vector2.zero)
         {
