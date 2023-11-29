@@ -7,7 +7,6 @@ using UnityEngine.Serialization;
 public class AttackState : MonoBehaviour, State
 {
     [SerializeField] private float attackMoveForce;
-    [SerializeField] private GameObject hitPoint;
 
     private StateMachine _stateMachine;
     private Animator _animator;
@@ -21,7 +20,6 @@ public class AttackState : MonoBehaviour, State
     public int _comboCounter;
     private bool _canStartNewCombo = true;
     [SerializeField] private float secondsBetweenAttacks;
-    private DamageSource _damageSource;
 
     public UnityEvent startAttacking;
     public UnityEvent endAttacking; 
@@ -33,7 +31,6 @@ public class AttackState : MonoBehaviour, State
         _animator = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _comboCounter = 0;
-        _damageSource = hitPoint.GetComponent<DamageSource>();
         _animator.ResetTrigger("DoneAttacking");
         Attack();
     }
@@ -66,11 +63,11 @@ public class AttackState : MonoBehaviour, State
         }
         _rigidbody.velocity = transform.forward * attackMoveForce;
         _animator.runtimeAnimatorController = combo[_comboCounter].AnimatorOverrideController;
-        _damageSource.damage = combo[_comboCounter].Damage;
-        hitPoint.transform.localPosition = combo[_comboCounter].HitPointLocation;
         _animator.Play("Attack",0,0);
         _comboCounter++;
         _lastAttackTime = 0;
+        
+        
     }
 
     private void ExitAttack()
