@@ -6,23 +6,20 @@ using UnityEngine.Serialization;
 
 public class AttackState : MonoBehaviour, State
 {
-    [SerializeField] private float attackMoveForce;
+    [SerializeField] private List<AttackSO> combo;
+    [SerializeField] private float secondsBetweenAttacks;
 
     private StateMachine _stateMachine;
     private Animator _animator;
     private Rigidbody _rigidbody;
-
-    //Dit is de combo kijken of het nog gesplitst moet worden
-    [SerializeField] private List<AttackSO> combo;
-    
     private float _lastAttackTime = 100;
     private float _lastComboEnd;
-    public int _comboCounter;
-    private bool _canStartNewCombo = true;
-    [SerializeField] private float secondsBetweenAttacks;
+    private int _comboCounter;
 
     public UnityEvent startAttacking;
-    public UnityEvent endAttacking; 
+    public UnityEvent endAttacking;
+
+    public bool maySwapAttack = true;
 
 
     public void Enter(StateMachine stateMachine)
@@ -42,8 +39,6 @@ public class AttackState : MonoBehaviour, State
         {
             Attack();
         }
-
-        ExitAttack();
     }
 
     public void Exit()
@@ -54,28 +49,29 @@ public class AttackState : MonoBehaviour, State
 
     private void Attack()
     {
-        if (_comboCounter > combo.Count || !(_lastAttackTime >= secondsBetweenAttacks)) return;
-        startAttacking?.Invoke();
+        if (_comboCounter > combo.Count || !maySwapAttack) return;
         CancelInvoke(nameof(EndCombo));
+        maySwapAttack = false;
+        startAttacking?.Invoke();
         if (_comboCounter >= combo.Count)
         {
             _comboCounter = 0;
         }
-        _rigidbody.velocity = transform.forward * attackMoveForce;
-        _animator.runtimeAnimatorController = combo[_comboCounter].AnimatorOverrideController;
+        _rigidbody.velocity = transform.forward * combo[_comboCounter].attackMoveForce;
+        _animator.runtimeAnimatorController = combo[_comboCounter].animatorOverrideController;
         _animator.Play("Attack",0,0);
         _comboCounter++;
         _lastAttackTime = 0;
-        
-        
     }
 
-    private void ExitAttack()
+    public void StartedNewAttack()
     {
-        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.2 && _animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
-        {
-            Invoke(nameof(EndCombo), secondsBetweenAttacks + .2f);
-        }
+        maySwapAttack = true;
+    }
+
+    public void ExitAttack()
+    {
+        Invoke(nameof(EndCombo), secondsBetweenAttacks + .2f);
     }
 
     private void EndCombo()
