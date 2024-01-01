@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,83 +9,83 @@ public class AttackState : MonoBehaviour, State
 {
     [SerializeField] private List<AttackSO> combo;
     [SerializeField] private float secondsBetweenAttacks;
+    [SerializeField] private int comboStepIndex;
 
     private StateMachine _stateMachine;
     private Animator _animator;
-    private Rigidbody _rigidbody;
-    private float _lastAttackTime = 100;
-    private float _lastComboEnd;
-    private int _comboCounter;
+    private AnimatorOverrideController _animatorOverrideController;
 
     public UnityEvent startAttacking;
     public UnityEvent endAttacking;
+    
+    public bool hasSwappedAttack;
+    public bool maySawp = true;
+    public AttackSO AttackSo;
+    
+    private readonly string[] _attackStateNames = { "Attack1", "Attack2" };
+    public int _attackStateId;
 
-    public bool maySwapAttack = true;
+    private void Awake()
+    {
+        _animator = GetComponentInChildren<Animator>();
+        _animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
+        _animator.runtimeAnimatorController = _animatorOverrideController;
+    }
 
 
     public void Enter(StateMachine stateMachine)
     {
         _stateMachine = stateMachine;
-        _animator = GetComponentInChildren<Animator>();
-        _rigidbody = GetComponent<Rigidbody>();
-        _comboCounter = 0;
         _animator.ResetTrigger("DoneAttacking");
         Attack();
     }
 
     public void Tick()
     {
-        _lastAttackTime += Time.deltaTime;
         if (InputHandler.Instance.IsAttacking())
         {
             Attack();
         }
     }
 
-    public void Exit()
-    {
-        _rigidbody.velocity = Vector3.zero;
-        _comboCounter = 0;
-    }
-
     private void Attack()
     {
-        if (_comboCounter > combo.Count || !maySwapAttack) return;
-        CancelInvoke(nameof(EndCombo));
-        maySwapAttack = false;
-        startAttacking?.Invoke();
-        if (_comboCounter >= combo.Count)
-        {
-            _comboCounter = 0;
-        }
-        _rigidbody.velocity = transform.forward * combo[_comboCounter].attackMoveForce;
-        _animator.runtimeAnimatorController = combo[_comboCounter].animatorOverrideController;
-        _animator.Play("Attack",0,0);
-        _comboCounter++;
-        _lastAttackTime = 0;
+        if (comboStepIndex >= combo.Count || !maySawp) return;
+        maySawp = false;
+        StopAllCoroutines();
+        SwitchAttackAnimation();
+        AttackSo = combo[comboStepIndex];
+        comboStepIndex++;
+        hasSwappedAttack = true;
+        _animator.SetTrigger("Attack");
+    }
+
+    private void SwitchAttackAnimation()
+    {
+        var currentAttackStateName = _attackStateNames[_attackStateId];
+        _animatorOverrideController[currentAttackStateName] = combo[comboStepIndex].attackAnimation;
+        _attackStateId = _attackStateId == 1 ? 0 : 1;
     }
 
     public void StartedNewAttack()
     {
-        maySwapAttack = true;
+        hasSwappedAttack = false;
+        maySawp = true;
     }
 
-    public void ExitAttack()
+    public void AttackEnded()
     {
-        Invoke(nameof(EndCombo), secondsBetweenAttacks + .2f);
-    }
-
-    private void EndCombo()
-    {
-        endAttacking?.Invoke();
-        _animator.SetTrigger("DoneAttacking");
+        if(hasSwappedAttack) return;
+        _animator.SetTrigger("ComboEnded");
+        comboStepIndex = 0;
+        _attackStateId = 0;
         if (InputHandler.Instance.GetMovementValue() != Vector2.zero)
         {
-            _stateMachine.SwitchState(playerState.Walk);
+            _stateMachine.SwitchState(playerState.Idle);
         }
         else
         {
-            _stateMachine.SwitchState(playerState.Idle);
+            _stateMachine.SwitchState(playerState.Walk);
         }
     }
 }

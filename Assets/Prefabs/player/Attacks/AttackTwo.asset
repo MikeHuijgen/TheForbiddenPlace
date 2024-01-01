@@ -16,3 +16,4 @@ MonoBehaviour:
     type: 2}
   damage: 0
   attackMoveForce: 0
+  attackAnimation: {fileID: 7400000, guid: 05b185756c246a544b0f93a46460a43a, type: 2}

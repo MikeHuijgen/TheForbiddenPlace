@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(menuName = "Attacks/NormalAttack")]
 public class AttackSO : ScriptableObject
 {
-    public AnimatorOverrideController animatorOverrideController;
     public float damage;
     public float attackMoveForce;
+    public AnimationClip attackAnimation;
 }
