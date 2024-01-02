@@ -1882,6 +1882,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitColliders: []
   weaponCollider: {fileID: 1243474254}
+--- !u!1 &1271779315 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8950624460309879809, guid: 143117b48ffeb674383ad136209ed76b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7904704179757832815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1304586384 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e38838c1cb85da44c9887ad5a46d2953,
@@ -2477,6 +2483,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7904704179757832815}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1814982933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271779315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2ca0e9047461c1428f1c2a9e7fa92e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1875327495
 GameObject:
   m_ObjectHideFlags: 0
@@ -3160,6 +3178,10 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 705410190}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8950624460309879809, guid: 143117b48ffeb674383ad136209ed76b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1814982933}
     - targetCorrespondingSourceObject: {fileID: 7367271714227018182, guid: 143117b48ffeb674383ad136209ed76b,
         type: 3}
       insertIndex: -1

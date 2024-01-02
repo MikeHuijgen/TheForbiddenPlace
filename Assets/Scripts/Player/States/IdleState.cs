@@ -5,13 +5,10 @@ using UnityEngine;
 public class IdleState : MonoBehaviour, State
 {
     private StateMachine _stateMachine;
-    private Animator _animator;
 
     public void Enter(StateMachine stateMachine)
     {
         _stateMachine = stateMachine;
-        _animator = GetComponentInChildren<Animator>();
-        _animator.SetBool("Idle", true);
     }
 
     public void Tick()
@@ -25,10 +22,5 @@ public class IdleState : MonoBehaviour, State
         {
             _stateMachine.SwitchState(playerState.Attack);
         }
-    }
-
-    public void Exit()
-    {
-        _animator.SetBool("Idle", false);
     }
 }

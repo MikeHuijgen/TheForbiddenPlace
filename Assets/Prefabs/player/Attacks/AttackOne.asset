@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66b133eae42a37a4eb88bc3bfd593bc2, type: 3}
   m_Name: AttackOne
   m_EditorClassIdentifier: 
-  animatorOverrideController: {fileID: 22100000, guid: 6d8b34b4c8d8d2f4292f3939c3aecab9,
-    type: 2}
-  damage: 0
-  attackMoveForce: 0
+  damage: 2
+  attackMoveForce: 5
   attackAnimation: {fileID: 7400000, guid: ef84c892c9ce62540b09f42b06f77082, type: 2}

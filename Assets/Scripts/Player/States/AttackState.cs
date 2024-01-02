@@ -8,26 +8,34 @@ using UnityEngine.Serialization;
 public class AttackState : MonoBehaviour, State
 {
     [SerializeField] private List<AttackSO> combo;
-    [SerializeField] private float secondsBetweenAttacks;
-    [SerializeField] private int comboStepIndex;
+    private AttackSO currentComboAttack;
+    
+    private int comboStepIndex;
+    private bool hasSwappedAttack;
+    private bool maySwapAttack = true;
 
     private StateMachine _stateMachine;
     private Animator _animator;
     private AnimatorOverrideController _animatorOverrideController;
+    private Rigidbody _rigidbody;
+    private HitChecker _hitChecker;
+    private DamageSource _damageSource;
 
     public UnityEvent startAttacking;
     public UnityEvent endAttacking;
+
+    public AttackSO CurrentComboAttack => currentComboAttack;
     
-    public bool hasSwappedAttack;
-    public bool maySawp = true;
-    public AttackSO AttackSo;
-    
+
     private readonly string[] _attackStateNames = { "Attack1", "Attack2" };
     public int _attackStateId;
 
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
+        _rigidbody = GetComponent<Rigidbody>();
+        _hitChecker = GetComponentInChildren<HitChecker>();
+        _damageSource = GetComponentInChildren<DamageSource>();
         _animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = _animatorOverrideController;
     }
@@ -50,12 +58,12 @@ public class AttackState : MonoBehaviour, State
 
     private void Attack()
     {
-        if (comboStepIndex >= combo.Count || !maySawp) return;
-        maySawp = false;
+        if (comboStepIndex >= combo.Count || !maySwapAttack) return;
+        maySwapAttack = false;
         StopAllCoroutines();
+        currentComboAttack = combo[comboStepIndex];
         SwitchAttackAnimation();
-        AttackSo = combo[comboStepIndex];
-        comboStepIndex++;
+        AddAttackForce();
         hasSwappedAttack = true;
         _animator.SetTrigger("Attack");
     }
@@ -67,14 +75,23 @@ public class AttackState : MonoBehaviour, State
         _attackStateId = _attackStateId == 1 ? 0 : 1;
     }
 
+    private void AddAttackForce()
+    {
+        _rigidbody.velocity += transform.forward * combo[comboStepIndex].attackMoveForce;
+    }
+
     public void StartedNewAttack()
     {
+        startAttacking?.Invoke();
+        comboStepIndex++;
         hasSwappedAttack = false;
-        maySawp = true;
+        maySwapAttack = true;
     }
 
     public void AttackEnded()
     {
+        endAttacking?.Invoke();
+
         if(hasSwappedAttack) return;
         _animator.SetTrigger("ComboEnded");
         comboStepIndex = 0;

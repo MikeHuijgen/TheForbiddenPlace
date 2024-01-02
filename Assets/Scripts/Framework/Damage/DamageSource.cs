@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class DamageSource : MonoBehaviour
 {
-    public float damage;
-    public float range;
-    public LayerMask enemyLayer;
+    public float range = 2f;
 
-    public void ActivateSphere()
+    public void DealDamage(List<GameObject> targets, float damage)
     {
-        var collider = Physics.OverlapSphere(transform.position, range, enemyLayer);
-        foreach (var col in collider)
+        //Debug.Log(damage);
+        foreach (var target in targets)
         {
-            var healthComponent = col.GetComponent<Health>();
-            healthComponent.TakeDamage(damage);
+            if (target.TryGetComponent<Health>(out var health))
+            {
+                health.TakeDamage(damage);
+            }
         }
     }
 
