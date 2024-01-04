@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class HitChecker : MonoBehaviour
 {
     [SerializeField] private List<Collider> hitColliders;
-    [SerializeField] private List<LayerMask> layersToIgnore;
+    [SerializeField] private int layerToIgnore;
     private BoxCollider _hitBoxCollider;
     private DamageSource _damageSource;
     private AttackState _attackState;
@@ -27,35 +29,11 @@ public class HitChecker : MonoBehaviour
 
         foreach (var hit in hitObjects)
         {
-            if (!hitColliders.Contains(hit) && hit.GetComponent<Health>() && hit.gameObject.layer != LayerMask.NameToLayer("Player"))
-            {
-                hitColliders.Add(hit);
-                print("k");
-            }
+            if (hitColliders.Contains(hit) || !hit.TryGetComponent<Health>(out var health) || hit.gameObject.layer == layerToIgnore) continue;
             
-            
-            /*if (!IsValidTarget(hit) || !hit.TryGetComponent<Health>(out var health)) continue;
             hitColliders.Add(hit);
-            _damageSource.DealDamage(health, _attackState.CurrentComboAttack.damage);*/
+            _damageSource.DealDamage(health, _attackState.CurrentComboAttack.damage);
         }
-    }
-
-    private bool IsValidTarget(Collider target)
-    {
-        return hitColliders.Contains(target) || !TargetHasNoIgnoredLayer(target);
-    }
-
-    private bool TargetHasNoIgnoredLayer(Collider target)
-    {
-        foreach (var layer in layersToIgnore)
-        {
-            if (target.gameObject.layer == layer)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public void ResetHitColliders()

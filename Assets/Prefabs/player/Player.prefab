@@ -48,7 +48,8 @@ GameObject:
   - component: {fileID: 8651429785415812868}
   - component: {fileID: 9047987134832392914}
   - component: {fileID: 3274741223907524837}
-  m_Layer: 0
+  - component: {fileID: 8032601766307506053}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +255,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _attackStateId: 0
+--- !u!114 &8032601766307506053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950624460309879809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f21574a98f87b3a4da971d5884ffb5ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  isIndestructible: 1
 --- !u!1001 &1893621231702011497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -570,9 +584,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1269233210861291331, guid: 2836623f3d8d55d43b14e80fb6dad94f,
         type: 3}
+      propertyPath: layerToIgnore
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269233210861291331, guid: 2836623f3d8d55d43b14e80fb6dad94f,
+        type: 3}
       propertyPath: _hitBoxCollider
       value: 
       objectReference: {fileID: 2374344088926553381}
+    - target: {fileID: 4807957431071382579, guid: 2836623f3d8d55d43b14e80fb6dad94f,
+        type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 8440413714617520875, guid: 2836623f3d8d55d43b14e80fb6dad94f,
         type: 3}
       propertyPath: m_RootOrder

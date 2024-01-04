@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: AttackTwo
   m_EditorClassIdentifier: 
   damage: 5
-  attackMoveForce: 3
+  attackMoveForce: 0
   attackAnimation: {fileID: 7400000, guid: 05b185756c246a544b0f93a46460a43a, type: 2}
