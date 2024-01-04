@@ -8,31 +8,45 @@ public class WalkState : MonoBehaviour, State
     [SerializeField] private float rotationSpeed;
     
     private Rigidbody _rigidbody;
-
-    private PlayerControls _playerControls;
-
     private Vector2 _movement;
-    
     private StateMachine _stateMachine;
     private Animator _animator;
+
+    private float _lastMovementInput;
+    private float _waitTillIdle = .2f;
 
     public void Enter(StateMachine stateMachine)
     {
         _stateMachine = stateMachine;
-        _playerControls = new PlayerControls();
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponentInChildren<Animator>();
-        _playerControls.Movement.Enable();
-        _animator.SetBool("Walk", true);
+        _animator.SetBool("Walking", true);
     }
 
     public void Tick()
     {
-        _movement = _playerControls.Movement.Move.ReadValue<Vector2>();
-
+        _movement = InputHandler.Instance.GetMovementValue();
+        
         if (_movement == Vector2.zero)
         {
-            _stateMachine.SwitchState(playerState.Idle);
+            _animator.SetBool("Walking", false);
+            _lastMovementInput += Time.deltaTime;
+            if (_lastMovementInput > _waitTillIdle)
+            {
+                _lastMovementInput = 0;
+                _stateMachine.SwitchState(playerState.Idle);
+            }
+        }
+        else
+        {
+            _lastMovementInput = 0;
+            _animator.SetBool("Walking", true);
+        }
+        
+        
+        if (InputHandler.Instance.IsAttacking())
+        {
+            _stateMachine.SwitchState(playerState.Attack);
         }
     }
 
@@ -44,8 +58,8 @@ public class WalkState : MonoBehaviour, State
 
     public void Exit()
     {
+        _animator.SetBool("Walking", false);
         _rigidbody.velocity = Vector3.zero;
-        _animator.SetBool("Walk", false);
     }
 
     private void Move()

@@ -2,5 +2,6 @@
 public enum playerState
 {
     Idle,
-    Walk
+    Walk,
+    Attack
 }
