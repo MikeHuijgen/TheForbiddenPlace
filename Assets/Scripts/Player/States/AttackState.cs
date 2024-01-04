@@ -69,7 +69,6 @@ public class AttackState : MonoBehaviour, State
         _maySwapAttack = false;
         StopAllCoroutines();
         SwitchAttackAnimation();
-        AddAttackForce();
         _hasSwappedAttack = true;
         _animator.SetTrigger("Attack");
     }
@@ -91,9 +90,10 @@ public class AttackState : MonoBehaviour, State
         startAttacking?.Invoke();
         _isPreformingAttack = true;
         currentComboAttack = combo[_comboStepIndex];
-        _comboStepIndex++;
         _hasSwappedAttack = false;
         _maySwapAttack = true;
+        AddAttackForce();
+        _comboStepIndex++;
     }
 
     public void AttackEnded()
