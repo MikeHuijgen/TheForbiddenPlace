@@ -40,4 +40,10 @@ public class InputHandler : MonoBehaviour
     {
         return _playerControls.Combat.Attack.triggered;
     }
+
+    public bool IsDodging()
+    {
+        return _playerControls.Combat.Dodge.triggered;
+    }
+    
 }
