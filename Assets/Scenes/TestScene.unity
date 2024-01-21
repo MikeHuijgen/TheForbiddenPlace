@@ -1516,12 +1516,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1243474254 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2374344088926553381, guid: 143117b48ffeb674383ad136209ed76b,
-    type: 3}
-  m_PrefabInstance: {fileID: 7904704179757832815}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1329043990
 GameObject:
   m_ObjectHideFlags: 0
@@ -2445,16 +2439,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2374344088926553381, guid: 143117b48ffeb674383ad136209ed76b,
-        type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668178828221762587, guid: 143117b48ffeb674383ad136209ed76b,
-        type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4893555782735879847, guid: 143117b48ffeb674383ad136209ed76b,
         type: 3}
       propertyPath: m_RootOrder
@@ -2510,50 +2494,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7367271714227018182, guid: 143117b48ffeb674383ad136209ed76b,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7848639238834832940, guid: 143117b48ffeb674383ad136209ed76b,
-        type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8347191494061694549, guid: 143117b48ffeb674383ad136209ed76b,
-        type: 3}
-      propertyPath: layerToIgnore
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8347191494061694549, guid: 143117b48ffeb674383ad136209ed76b,
-        type: 3}
-      propertyPath: hitBoxCollider
-      value: 
-      objectReference: {fileID: 1243474254}
-    - target: {fileID: 8347191494061694549, guid: 143117b48ffeb674383ad136209ed76b,
-        type: 3}
-      propertyPath: layersToIgnore.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 8347191494061694549, guid: 143117b48ffeb674383ad136209ed76b,
-        type: 3}
-      propertyPath: layersToIgnore.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8347191494061694549, guid: 143117b48ffeb674383ad136209ed76b,
-        type: 3}
-      propertyPath: layersToIgnore.Array.data[0].m_Bits
-      value: 64
-      objectReference: {fileID: 0}
     - target: {fileID: 8950624460309879809, guid: 143117b48ffeb674383ad136209ed76b,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8950624460309879809, guid: 143117b48ffeb674383ad136209ed76b,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -9,8 +9,7 @@ public class AttackState : MonoBehaviour, State
 {
     [SerializeField] private List<AttackData> combo;
     [SerializeField] private AttackData currentComboAttack;
-    [SerializeField] private float Timer;
-    
+
     private int _comboStepIndex;
     private bool _maySwapAttack = true;
     private bool _isPreformingAttack;
@@ -64,7 +63,6 @@ public class AttackState : MonoBehaviour, State
     private void Attack()
     {
         if (_comboStepIndex >= combo.Count || !_maySwapAttack) return;
-        Timer = 0;
         _maySwapAttack = false;
         StopAllCoroutines();
         SwitchAttackAnimation();
