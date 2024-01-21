@@ -7,11 +7,11 @@ using UnityEngine.Serialization;
 
 public class AttackState : MonoBehaviour, State
 {
-    [SerializeField] private List<AttackSO> combo;
-    [SerializeField]private AttackSO currentComboAttack;
+    [SerializeField] private List<AttackData> combo;
+    [SerializeField] private AttackData currentComboAttack;
+    [SerializeField] private float Timer;
     
     private int _comboStepIndex;
-    private bool _hasSwappedAttack;
     private bool _maySwapAttack = true;
     private bool _isPreformingAttack;
 
@@ -20,13 +20,12 @@ public class AttackState : MonoBehaviour, State
     private AnimatorOverrideController _animatorOverrideController;
     private Rigidbody _rigidbody;
     private HitChecker _hitChecker;
-    private DamageSource _damageSource;
 
     public UnityEvent startAttacking;
     public UnityEvent endAttacking;
 
-    public AttackSO CurrentComboAttack => currentComboAttack;
-    
+    public AttackData CurrentComboAttack => currentComboAttack;
+
 
     private readonly string[] _attackStateNames = { "Attack1", "Attack2" };
     private int _attackStateId;
@@ -36,7 +35,6 @@ public class AttackState : MonoBehaviour, State
         _animator = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _hitChecker = GetComponentInChildren<HitChecker>();
-        _damageSource = GetComponentInChildren<DamageSource>();
         _animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = _animatorOverrideController;
     }
@@ -66,12 +64,14 @@ public class AttackState : MonoBehaviour, State
     private void Attack()
     {
         if (_comboStepIndex >= combo.Count || !_maySwapAttack) return;
+        Timer = 0;
         _maySwapAttack = false;
         StopAllCoroutines();
         SwitchAttackAnimation();
-        AddAttackForce();
-        _hasSwappedAttack = true;
+        currentComboAttack = combo[_comboStepIndex];
         _animator.SetTrigger("Attack");
+        AddAttackForce();
+        StartCoroutine(EndCombo());
     }
 
     private void SwitchAttackAnimation()
@@ -89,19 +89,16 @@ public class AttackState : MonoBehaviour, State
     public void StartedNewAttack()
     {
         startAttacking?.Invoke();
-        _isPreformingAttack = true;
-        currentComboAttack = combo[_comboStepIndex];
-        _comboStepIndex++;
-        _hasSwappedAttack = false;
         _maySwapAttack = true;
+        _isPreformingAttack = true;
+        _comboStepIndex++;
     }
 
-    public void AttackEnded()
+    private IEnumerator EndCombo()
     {
+        yield return new WaitForSeconds(currentComboAttack.comboExitTime);
         endAttacking?.Invoke();
         _isPreformingAttack = false;
-
-        if(_hasSwappedAttack) return;
         _animator.SetTrigger("ComboEnded");
         _comboStepIndex = 0;
         _attackStateId = 0;
