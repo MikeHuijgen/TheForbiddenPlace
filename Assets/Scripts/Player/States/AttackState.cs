@@ -55,6 +55,11 @@ public class AttackState : MonoBehaviour, State
         {
             Attack();
         }
+
+        if (InputHandler.Instance.IsDodging())
+        {
+            _stateMachine.SwitchState(playerState.Dodge);
+        }
     }
 
     public void FixedTick()
@@ -106,7 +111,7 @@ public class AttackState : MonoBehaviour, State
         _animator.SetTrigger("ComboEnded");
         _comboStepIndex = 0;
         _attackStateId = 0;
-        _stateMachine.SwitchState(InputHandler.Instance.GetMovementValue() != Vector2.zero
+        _stateMachine.SwitchState(InputHandler.Instance.GetMovementDirectionValue() != Vector2.zero
             ? playerState.Idle
             : playerState.Walk);
     }

@@ -29,7 +29,7 @@ public class InputHandler : MonoBehaviour
     }
     
 
-    public Vector2 GetMovementValue()
+    public Vector2 GetMovementDirectionValue()
     {
         return _movementValue;
     }

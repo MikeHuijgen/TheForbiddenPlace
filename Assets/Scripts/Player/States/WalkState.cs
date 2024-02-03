@@ -31,7 +31,7 @@ public class WalkState : MonoBehaviour, State
 
     public void Tick()
     {
-        _movement = InputHandler.Instance.GetMovementValue();
+        _movement = InputHandler.Instance.GetMovementDirectionValue();
         
         if (_movement == Vector2.zero)
         {
@@ -54,6 +54,11 @@ public class WalkState : MonoBehaviour, State
         {
             _stateMachine.SwitchState(playerState.Attack);
         }
+
+        if (InputHandler.Instance.IsDodging())
+        {
+            _stateMachine.SwitchState(playerState.Dodge);
+        }
     }
 
     public void FixedTick()
@@ -75,11 +80,9 @@ public class WalkState : MonoBehaviour, State
 
     private void RotatePlayer()
     {
-        if (_movement != Vector2.zero)
-        {
-            var targetRotation = Quaternion.LookRotation(new Vector3(_movement.x, 0, _movement.y));
-            targetRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
-            _rigidbody.MoveRotation(targetRotation);
-        }
+        if (_movement == Vector2.zero) return;
+        var targetRotation = Quaternion.LookRotation(new Vector3(_movement.x, 0, _movement.y));
+        targetRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
+        _rigidbody.MoveRotation(targetRotation);
     }
 }

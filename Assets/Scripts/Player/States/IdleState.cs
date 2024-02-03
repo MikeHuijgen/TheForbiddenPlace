@@ -20,7 +20,7 @@ public class IdleState : MonoBehaviour, State
 
     public void Tick()
     {
-        if (InputHandler.Instance.GetMovementValue() != Vector2.zero)
+        if (InputHandler.Instance.GetMovementDirectionValue() != Vector2.zero)
         {
             _stateMachine.SwitchState(playerState.Walk);
         }
