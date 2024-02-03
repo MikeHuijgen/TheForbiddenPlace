@@ -6,9 +6,9 @@ public class DodgeState : MonoBehaviour, State
 {
     private StateMachine _stateMachine;
     
-    public void Enter(StateMachine stateMachine)
+    public void Enter()
     {
-        _stateMachine = stateMachine;
+        
     }
 
     public void Tick()

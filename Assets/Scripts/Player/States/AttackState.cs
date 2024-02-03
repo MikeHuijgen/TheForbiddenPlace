@@ -33,18 +33,19 @@ public class AttackState : MonoBehaviour, State
 
     private void Awake()
     {
+        _stateMachine = GetComponent<StateMachine>();
         _animator = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _hitChecker = GetComponentInChildren<HitChecker>();
         _damageSource = GetComponentInChildren<DamageSource>();
         _animatorOverrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = _animatorOverrideController;
+        _stateMachine.AddPlayerState(playerState.Attack, this);
     }
 
 
-    public void Enter(StateMachine stateMachine)
+    public void Enter()
     {
-        _stateMachine = stateMachine;
         Attack();
     }
 

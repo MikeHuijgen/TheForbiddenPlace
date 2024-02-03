@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,15 @@ public class IdleState : MonoBehaviour, State
 {
     private StateMachine _stateMachine;
 
-    public void Enter(StateMachine stateMachine)
+    private void Awake()
     {
-        _stateMachine = stateMachine;
+        _stateMachine = GetComponent<StateMachine>();
+        _stateMachine.AddPlayerState(playerState.Idle, this);
+    }
+
+    public void Enter()
+    {
+
     }
 
     public void Tick()
@@ -21,6 +28,11 @@ public class IdleState : MonoBehaviour, State
         if (InputHandler.Instance.IsAttacking())
         {
             _stateMachine.SwitchState(playerState.Attack);
+        }
+
+        if (InputHandler.Instance.IsDodging())
+        {
+            _stateMachine.SwitchState(playerState.Dodge);
         }
     }
 }

@@ -5,25 +5,14 @@ using UnityEngine;
 
 public class StateMachine : MonoBehaviour
 {
+    [SerializeField] private playerState playerState;
+    
     private State _currentState;
-
-    [SerializeField] private playerState _playerState;
-    
-    private WalkState _walkState;
-    private IdleState _idleState;
-    private AttackState _attackState;
-    
-    private void Awake()
-    {
-        _walkState = GetComponent<WalkState>();
-        _idleState = GetComponent<IdleState>();
-        _attackState = GetComponent<AttackState>();
-    }
+    private readonly Dictionary<playerState, State> _playerStates = new Dictionary<playerState, State>();
 
     private void Start()
     {
-        _currentState = _idleState;
-        _currentState.Enter(this);
+        _currentState = _playerStates[playerState];
     }
 
     private void Update()
@@ -39,26 +28,14 @@ public class StateMachine : MonoBehaviour
     public void SwitchState(playerState newState)
     {
         _currentState?.Exit();
-        CheckNewState(newState);
-        _currentState.Enter(this);
+        _currentState = _playerStates[newState];
+        _currentState.Enter();
     }
 
-    private void CheckNewState(playerState state)
+    public void AddPlayerState(playerState playerState, State state)
     {
-        switch (state)
-        {
-            case playerState.Idle:
-                _currentState = _idleState;
-                _playerState = playerState.Idle;
-                break;
-            case playerState.Walk:
-                _currentState = _walkState;
-                _playerState = playerState.Walk;
-                break;
-            case playerState.Attack:
-                _currentState = _attackState;
-                _playerState = playerState.Attack;
-                break;
-        }
+        if (_playerStates.ContainsKey(playerState)) return;
+
+        _playerStates.Add(playerState, state);
     }
 }

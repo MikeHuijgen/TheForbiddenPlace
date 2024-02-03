@@ -121,12 +121,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Dodge"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""fd1e47b6-c684-48be-920c-9ad1ce12bae0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [

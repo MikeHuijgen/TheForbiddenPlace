@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InputHandler : MonoBehaviour
@@ -30,6 +27,7 @@ public class InputHandler : MonoBehaviour
     {
         _movementValue = _playerControls.Movement.Move.ReadValue<Vector2>();
     }
+    
 
     public Vector2 GetMovementValue()
     {
@@ -45,5 +43,4 @@ public class InputHandler : MonoBehaviour
     {
         return _playerControls.Combat.Dodge.triggered;
     }
-    
 }

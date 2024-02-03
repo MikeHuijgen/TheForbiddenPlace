@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,13 +14,18 @@ public class WalkState : MonoBehaviour, State
     private Animator _animator;
 
     private float _lastMovementInput;
-    private float _waitTillIdle = .2f;
+    private const float WaitTillIdle = .2f;
 
-    public void Enter(StateMachine stateMachine)
+    private void Awake()
     {
-        _stateMachine = stateMachine;
+        _stateMachine = GetComponent<StateMachine>();
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponentInChildren<Animator>();
+        _stateMachine.AddPlayerState(playerState.Walk, this);
+    }
+
+    public void Enter()
+    {
         _animator.SetBool("Walking", true);
     }
 
@@ -31,7 +37,7 @@ public class WalkState : MonoBehaviour, State
         {
             _animator.SetBool("Walking", false);
             _lastMovementInput += Time.deltaTime;
-            if (_lastMovementInput > _waitTillIdle)
+            if (_lastMovementInput > WaitTillIdle)
             {
                 _lastMovementInput = 0;
                 _stateMachine.SwitchState(playerState.Idle);
