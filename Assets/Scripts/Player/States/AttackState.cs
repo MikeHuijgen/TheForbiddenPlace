@@ -64,8 +64,8 @@ public class AttackState : MonoBehaviour, State
     private void Attack()
     {
         if (_lastAttack || !_maySwapAttack) return;
-        _maySwapAttack = false;
         StopAllCoroutines();
+        _maySwapAttack = false;
         SwitchAttackAnimation();
         _animator.SetTrigger("Attack");
     }
@@ -97,11 +97,14 @@ public class AttackState : MonoBehaviour, State
     {
         endAttacking?.Invoke();
         _isPreformingAttack = false;
+        _animator.SetTrigger("AttackEnded");
     }
 
     private IEnumerator EndCombo()
     {
         yield return new WaitForSeconds(currentComboAttack.comboExitTime);
+        _animator.ResetTrigger("Attack");
+        _animator.ResetTrigger("AttackEnded");
         _animator.SetTrigger("ComboEnded");
         _comboStepIndex = 0;
         _attackStateId = 0;
