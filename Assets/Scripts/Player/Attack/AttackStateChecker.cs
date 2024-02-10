@@ -18,7 +18,7 @@ public class AttackStateChecker : StateMachineBehaviour
     {
         if (!(stateInfo.normalizedTime >= 1) || _attackFinished) return;
         _attackFinished = true;
-        _attackState.AttackEnded();
+        _attackState.EndAttack();
     }
     
 }
