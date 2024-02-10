@@ -189,6 +189,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 745880ce5c7ec5c40bffdc90fdab0c11, type: 2}
   - {fileID: 11400000, guid: 0918d60f788647f4bb429ebcc6cef839, type: 2}
   currentComboAttack: {fileID: 0}
+  Timer: 0
   startAttacking:
     m_PersistentCalls:
       m_Calls:

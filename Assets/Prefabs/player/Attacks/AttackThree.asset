@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: AttackThree
   m_EditorClassIdentifier: 
   damage: 10
-  attackMoveForce: 10
+  attackMoveForce: 5
+  comboExitTime: 1
   attackAnimation: {fileID: 7400000, guid: 2e52ae9867dc572469071dbf9767f953, type: 2}
