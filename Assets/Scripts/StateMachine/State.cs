@@ -5,7 +5,7 @@ using UnityEngine;
 public interface State
 {
     public void Enter();
-    public void Tick();
+    public void Tick(){}
     public void FixedTick(){}
     public void Exit(){}
 }

@@ -8,6 +8,7 @@ public class DodgeState : MonoBehaviour, State
     [SerializeField] private float dodgeForce;
     private StateMachine _stateMachine;
     private Rigidbody _rigidbody;
+    private Animator _animator;
 
     private Vector2 _movementDirection;
     private float timer;
@@ -16,6 +17,7 @@ public class DodgeState : MonoBehaviour, State
     {
         _stateMachine = GetComponent<StateMachine>();
         _rigidbody = GetComponent<Rigidbody>();
+        _animator = GetComponentInChildren<Animator>();
         _stateMachine.AddPlayerState(playerState.Dodge, this);
     }
 
@@ -23,17 +25,19 @@ public class DodgeState : MonoBehaviour, State
     {
         timer = 0;
         _movementDirection = InputHandler.Instance.GetMovementDirectionValue();
+        _animator.SetTrigger("Dodge");
         RotatePlayer();
         AddForce();
     }
 
-    public void Tick()
+    public void Exit()
     {
-        timer += Time.deltaTime;
-        if (timer > 1)
-        {
-            _stateMachine.SwitchState(playerState.Idle);
-        }
+        _rigidbody.velocity = Vector3.zero;
+    }
+
+    public void DodgeEnded()
+    {
+        _stateMachine.SwitchState(playerState.Idle);
     }
 
     private void RotatePlayer()

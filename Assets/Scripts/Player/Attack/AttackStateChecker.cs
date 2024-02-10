@@ -16,11 +16,9 @@ public class AttackStateChecker : StateMachineBehaviour
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (stateInfo.normalizedTime >= 1 && !_attackFinished)
-        {
-            _attackFinished = true;
-            _attackState.AttackEnded();
-        }
+        if (!(stateInfo.normalizedTime >= 1) || _attackFinished) return;
+        _attackFinished = true;
+        _attackState.AttackEnded();
     }
     
 }
