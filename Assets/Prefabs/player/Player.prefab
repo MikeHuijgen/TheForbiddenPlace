@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 8651429785415812868}
   - component: {fileID: 9047987134832392914}
   - component: {fileID: 3274741223907524837}
+  - component: {fileID: 7939686513369889009}
   - component: {fileID: 8032601766307506053}
   m_Layer: 6
   m_Name: Player
@@ -145,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7345f3d2b4278f44cbd383eb0492a68a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerState: 0
+  playerState: 0
 --- !u!114 &8651429785415812868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +190,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 745880ce5c7ec5c40bffdc90fdab0c11, type: 2}
   - {fileID: 11400000, guid: 0918d60f788647f4bb429ebcc6cef839, type: 2}
   currentComboAttack: {fileID: 0}
-  Timer: 0
   startAttacking:
     m_PersistentCalls:
       m_Calls:
@@ -256,6 +256,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7939686513369889009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950624460309879809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 266a6d2bc4b507648bab6d7e669cbfd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dodgeForce: 10
 --- !u!114 &8032601766307506053
 MonoBehaviour:
   m_ObjectHideFlags: 0

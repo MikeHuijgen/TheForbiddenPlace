@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66b133eae42a37a4eb88bc3bfd593bc2, type: 3}
+  m_Script: {fileID: 11500000, guid: c5e520e6165ffa945a5f413b8164401e, type: 3}
   m_Name: AttackThree
   m_EditorClassIdentifier: 
-  damage: 10
-  attackMoveForce: 5
+  damage: 3
+  attackMoveForce: 3
   comboExitTime: 1
   attackAnimation: {fileID: 7400000, guid: 2e52ae9867dc572469071dbf9767f953, type: 2}
