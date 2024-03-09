@@ -9,6 +9,9 @@ public class HealthBar : MonoBehaviour
    [SerializeField] private Health health;
    [SerializeField] private Slider slider;
 
+
+   private Color barColor;
+
    private void Awake()
    {
       slider.maxValue = health.GetCurrentHealth();
