@@ -45,7 +45,6 @@ public class HealthBar : MonoBehaviour
 
       for (var i = 1f; i > 0; i -= .2f)
       {
-         Debug.Log("test");
          newColor.a = i;
          fill.color = newColor;
          yield return new WaitForSeconds(fadeSpeed);
