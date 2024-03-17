@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-   [SerializeField] private Health health;
    [SerializeField] private Slider slider;
    
    [Header("Fade Settings")]
@@ -12,12 +11,14 @@ public class HealthBar : MonoBehaviour
    [SerializeField] private float timeBeforeFading;
    [SerializeField] private float fadeSpeed = 0.1f;
    
+   private Health _health;
    private Image fill;
 
    private void Awake()
    {
-      slider.maxValue = health.GetCurrentHealth();
-      slider.value = health.GetCurrentHealth();
+      _health = GetComponentInParent<Health>();
+      slider.maxValue = _health.GetCurrentHealth();
+      slider.value = _health.GetCurrentHealth();
       if (!canFade) return;
       fill = slider.fillRect.GetComponent<Image>();
    }
@@ -26,7 +27,7 @@ public class HealthBar : MonoBehaviour
    {
       StopAllCoroutines();
       
-      slider.value = health.GetCurrentHealth();
+      slider.value = _health.GetCurrentHealth();
 
       if (!canFade) return;
       var newColor = fill.color;
